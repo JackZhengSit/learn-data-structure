@@ -5,14 +5,16 @@ public class Bsearch {
   public static void main(String[] args) {
     int[] a = {1, 2, 3, 4, 5, 6, 8, 8, 8, 11, 18};
     //    QuickSort.quickSort(a, a.length);
-    System.out.println(bSearch(a, a.length, 8));
+    System.out.println(bSearch(a, a.length, 2));
   }
 
   static int bSearch(int[] a, int n, int val) {
     //    return bSearchC(a, 0, n - 1, val);
     //    return bSearchRecurrent(a, 0, n - 1, val);
     //    return bSearchFirst(a, 0, n - 1, val);
-    return bSearchLast(a, 0, n - 1, val);
+    //    return bSearchLast(a, 0, n - 1, val);
+    //    return bSearchFirstBiger(a, 0, n - 1, val);
+    return bSearchLastSmall(a, 0, n - 1, val);
   }
 
   static int bSearchC(int[] a, int low, int high, int val) {
@@ -57,6 +59,32 @@ public class Bsearch {
       else {
         if (mid == a.length - 1 || a[mid + 1] != val) return mid;
         else low = mid + 1;
+      }
+    }
+    return -1;
+  }
+
+  static int bSearchFirstBiger(int[] a, int low, int high, int val) {
+    while (low <= high) {
+      int mid = low + ((high - low) >> 1);
+      if (a[mid] > val) {
+        high = mid - 1;
+      } else {
+        if (a[mid + 1] != val) return mid + 1;
+        low = mid + 1;
+      }
+    }
+    return -1;
+  }
+
+  static int bSearchLastSmall(int[] a, int low, int high, int val) {
+    while (low <= high) {
+      int mid = low + ((high - low) >> 1);
+      if (a[mid] < val) {
+        low = mid + 1;
+      } else {
+        if (a[mid - 1] != val) return mid - 1;
+        high = mid - 1;
       }
     }
     return -1;
