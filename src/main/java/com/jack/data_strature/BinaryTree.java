@@ -23,8 +23,11 @@ public class BinaryTree {
     //    }
     inOderPrint(tree.root);
     System.out.println("==============");
-    tree.deleteNode(tree.root, 4);
+    //    System.out.println(getPre(tree.root, new TreeNode(7)).data);
+    tree.delete(6);
     inOderPrint(tree.root);
+    System.out.println("==============");
+    levelOrderPrint(tree.root);
   }
 
   public TreeNode root;
@@ -136,9 +139,13 @@ public class BinaryTree {
     TreeNode f = null;
     while (p != null) {
       if (target.data == p.data) return f;
-      f = p;
-      if (target.data < p.data) p = p.left;
-      if (target.data > p.data) p = p.right;
+      else if (target.data < p.data) {
+        f = p;
+        p = p.left;
+      } else {
+        f = p;
+        p = p.right;
+      }
     }
     return f;
   }
@@ -172,13 +179,14 @@ public class BinaryTree {
     TreeNode f = null; // 需要删除节点的父节点
 
     while (p != null) {
+
       if (data < p.data) {
+        f = p;
         p = p.left;
-      }
-      if (data > p.data) {
+      } else if (data > p.data) {
+        f = p;
         p = p.right;
-      }
-      if (data == p.data) {
+      } else {
         // 第一种情况
         // 要删除的节点没有子节点
         // 直接将要删除节点的父节点种的指针置为null
@@ -188,6 +196,7 @@ public class BinaryTree {
           } else {
             f.right = null;
           }
+          break;
         }
         // 第二种情况
         // 要删除的节点有一个子节点
@@ -198,6 +207,7 @@ public class BinaryTree {
           } else {
             f.right = p.left;
           }
+          break;
         }
         if (p.right != null && p.left == null) {
           if (f.left == p) {
@@ -205,21 +215,25 @@ public class BinaryTree {
           } else {
             f.right = p.right;
           }
+          break;
         }
         // 第三种情况
         // 要删除的节点有两个节点
         // 找到左子节点中的最大节点，用它替换该节点，然后删除最大节点
         // 或者找到右子节点的最小节点，用它替换该节点，然后删除最小节点
         if (p.left != null && p.right != null) {
-          TreeNode maxp = p; // 需要删除的最大节点
-          TreeNode maxf = null; // 最大节点的父节点
-          //            while()
-
+          TreeNode maxp = p.right; // 需要删除的最大节点
+          TreeNode maxf = p; // 最大节点的父节点
+          while (maxp.left != null) {
+            maxf = maxp;
+            maxp = maxp.left;
+          }
           p.data = maxp.data;
+          maxp.data = data;
+          f = maxf;
+          p = maxp;
         }
       }
-
-      f = p;
     }
   }
 
