@@ -23,7 +23,8 @@ public class BinaryTree {
     //    }
     inOderPrint(tree.root);
     System.out.println("==============");
-    System.out.println(getPre(tree.root, new TreeNode(5)).data);
+    tree.deleteNode(tree.root, 4);
+    inOderPrint(tree.root);
   }
 
   public TreeNode root;
@@ -42,6 +43,11 @@ public class BinaryTree {
     root.left.left.left = new TreeNode(1);
     root.left.left.right = new TreeNode(3);
     this.root = root;
+  }
+
+  void buildTree(int[] n) {
+    TreeNode root = new TreeNode(n[0]);
+    for (int i = 0; i < n.length; i++) {}
   }
 
   static void preOderPrint(TreeNode root) {
@@ -112,6 +118,18 @@ public class BinaryTree {
       }
     }
     return p;
+  }
+
+  int lDepth = 0, rDepth = 0;
+
+  public int getMaxDepth(TreeNode root) {
+    if (root == null) return 0;
+    return Math.max(getMaxDepth(root.left), getMaxDepth(root.right)) + 1;
+  }
+
+  public int getMaxDepth() {
+    TreeNode root = this.root;
+    return getMaxDepth(root);
   }
 
   public static TreeNode getPre(TreeNode p, TreeNode target) {
@@ -203,6 +221,67 @@ public class BinaryTree {
 
       f = p;
     }
+  }
+
+  public TreeNode deleteNode(TreeNode root, int key) {
+    TreeNode p = root; // node to delete
+    TreeNode f = null; // the father node to delete
+
+    // find key node and father node
+    while (p != null) {
+      if (p.data > key) {
+        f = p;
+        p = p.left;
+      } else if (p.data < key) {
+        f = p;
+        p = p.right;
+      } else {
+
+        // 1. p has no child
+        if (p.left == null && p.right == null) {
+          if (f == null) return null;
+          if (f.left == p) f.left = null;
+          else f.right = null;
+          break;
+        }
+
+        // 2. p has one child
+        else if (p.left == null && p.right != null) {
+
+          if (f == null) root = p.right;
+          else {
+            if (f.left == p) f.left = p.right;
+            else f.right = p.right;
+          }
+          break;
+        } else if (p.left != null && p.right == null) {
+
+          if (f == null) root = p.left;
+          else {
+            if (f.left == p) f.left = p.left;
+            else f.right = p.left;
+          }
+          break;
+        }
+
+        // 3. p has two child
+        // 3.1 find p's right child tree min or left child tree max
+        else {
+          TreeNode mp = p.right; // right child tree min
+          TreeNode mf = p; // the father of right child tree min
+          while (mp.left != null) {
+            mf = mp;
+            mp = mp.left;
+          }
+
+          p.data = mp.data;
+          mp.data = key;
+          p = mp;
+          f = mf;
+        }
+      }
+    }
+    return root;
   }
 
   public static class TreeNode {
