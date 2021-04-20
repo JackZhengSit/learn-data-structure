@@ -6,11 +6,13 @@ public class Heap {
     int[] a = {7, 5, 19, 8, 4, 1, 20, 13, 16};
     Heap heap = new Heap(a);
     heap.printHeap();
-    heap.removeMax();
+    //    heap.removeMax();
 
-    heap.printHeap();
-    heap.sort();
-    heap.printHeap();
+    //    heap.printHeap();
+    //    heap.sort();
+    //    heap.printHeap();
+    //    heap.insert(20);
+    heap.print();
   }
 
   int[] a; // 存储数据
@@ -87,5 +89,20 @@ public class Heap {
       System.out.print(a[i] + " ");
     }
     System.out.println();
+  }
+
+  void print() {
+    //    int i = 0;
+    //    while (true) {
+    //      if (Math.pow(2, i) <= count) {
+    //        System.out.println(a[i]);
+    //      }
+    //    }
+    for (int i = 1; 2 * i <= count; i = i * 2) {
+      for (int j = 0; j <= (Math.log(i) / Math.log(2)); j++) {
+        System.out.print(a[i + j] + " ");
+      }
+      System.out.println();
+    }
   }
 }
